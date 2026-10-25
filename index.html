@@ -8,7 +8,7 @@
     <style>
         :root {
             --primary: #f4f5ed;
-            --accent: #d4ad54;
+            --accent: #38bdf8;
             --bg-color: #0b1c26;
             --card-bg: #122934;
             --border-color: #28414d;
@@ -59,6 +59,8 @@
             text-transform: uppercase;
         }
         .notice p { margin: 0; font-size: 13px; }
+        .notice-inline-link { color: var(--accent); font-weight: 700; }
+        .notice-inline-link:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
         .notice-documents-link {
             display: inline-flex;
             margin-top: 16px;
@@ -294,19 +296,31 @@
             background: transparent;
             padding: 24px;
             border-top: 1px solid var(--border-color);
-            overflow: hidden;
+        }
+        .building-scroll {
+            overflow-x: auto;
+            overflow-y: hidden;
+            scrollbar-gutter: stable;
             container-type: inline-size;
+        }
+        .building-heading {
+            margin: 0 0 16px;
+            color: var(--primary);
+            font-size: 24px;
+            text-align: center;
         }
         .building-container {
             display: flex;
-            flex-wrap: wrap;
+            flex-wrap: nowrap;
+            width: max-content;
+            min-width: 100%;
             gap: 12px;
             justify-content: center;
             align-items: flex-end;
             padding-bottom: 10px;
         }
         .section {
-            max-width: 100%;
+            flex: 0 0 auto;
             border: 2px solid #38525d;
             border-top-width: 6px;
             padding: 8px;
@@ -341,12 +355,12 @@
         .apt:hover {
             transform: scale(1.2);
             z-index: 10;
-            box-shadow: 0 0 0 2px rgba(242, 210, 114, 0.25);
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
         }
         .paid {
-            background-color: #f2d272;
-            color: #26343a;
-            border: 1px solid #f7dda0;
+            background-color: #38bdf8;
+            color: #08202b;
+            border: 1px solid #7dd3fc;
         }
         .unpaid {
             background-color: #28434e;
@@ -359,6 +373,44 @@
             font-size: 18px;
             color: var(--muted);
         }
+        .commercial-premises {
+            max-width: 760px;
+            margin: 24px auto 0;
+            padding: 28px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background: var(--card-bg);
+        }
+        .commercial-premises h2 {
+            margin: 0 0 20px;
+            color: var(--primary);
+            font-size: 22px;
+            text-align: center;
+        }
+        .commercial-premises ul {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 10px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .commercial-premises li {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding: 13px 15px;
+            border: 1px solid #28414d;
+            border-radius: 6px;
+            color: var(--primary);
+            background: #17303b;
+        }
+        .commercial-payment-status {
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .commercial-payment-status.is-paid { color: var(--accent); }
         @media (max-width: 640px) {
             body { padding: 0 12px 28px; }
             header { padding: 52px 8px 8px; }
@@ -374,8 +426,10 @@
             .summary-item:nth-child(3n) { border-right: 1px solid var(--border-color); }
             .summary-item:nth-child(2n) { border-right: 0; }
             .building-wrapper { padding: 18px 0; }
-            .building-container { gap: 12px; justify-content: center; }
+            .building-container { gap: 12px; justify-content: flex-start; }
             .apt { width: clamp(20px, 8vw, 25px); height: clamp(19px, 7vw, 23px); font-size: 9px; }
+            .commercial-premises { margin-top: 18px; padding: 24px 16px; }
+            .commercial-premises ul { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -396,7 +450,8 @@
 
     <section class="notice" aria-labelledby="notice-title">
         <h2 id="notice-title">До уваги жильців та власників комерційних приміщень будинків 4 і 6</h2>
-        <p>Насосна станція, яка подає воду в два наші будинки, потребує невідкладного капітального ремонту. Ініціативна група жильців двох наших будинків та ЖЕК «Оселя» організували терміновий збір коштів для закупівлі необхідних матеріалів та виконання робіт. Просимо долучитись до збору всіх жильців. Наш будинок — наша відповідальність.</p>
+        <p><a class="notice-inline-link" href="https://drive.google.com/file/d/17lMvW5CKyBp3f09Lf0y5aYQc0idxh5Cs/view?usp=sharing" target="_blank" rel="noopener noreferrer">Насосна станція</a>, яка подає воду в два наші будинки, потребує невідкладного капітального ремонту. Ініціативна група жильців двох наших будинків та ЖЕК «Оселя» організували терміновий збір коштів для закупівлі необхідних матеріалів та виконання робіт.<br>Просимо долучитись до збору всіх жильців. </p>
+        <p>Наш будинок — наша відповідальність.</p>
         <a class="notice-documents-link" href="https://drive.google.com/drive/folders/19ZmqgvxX_Td37kxXgvmu2iJoo7S8sifN?usp=sharing" target="_blank" rel="noopener noreferrer">Переглянути документи щодо ремонту</a>
     </section>
 
@@ -441,9 +496,22 @@
 
     <div id="loading" class="loading">Завантаження даних із Google Таблиці...</div>
     
-    <div class="building-wrapper" id="building-wrapper" style="display: none;">
-        <div class="building-container" id="building"></div>
+    <div class="building-wrapper" id="building-wrapper" style="display: none;" role="region" aria-labelledby="building-title">
+        <h2 class="building-heading" id="building-title">Будинок 6</h2>
+        <div class="building-scroll">
+            <div class="building-container" id="building"></div>
+        </div>
     </div>
+
+    <section class="commercial-premises" aria-labelledby="commercial-premises-title">
+        <h2 id="commercial-premises-title">Комерційні приміщення</h2>
+        <ul>
+            <li data-commercial-id="sofiafoods">Магазин Софія Фудс <span class="commercial-payment-status">Чекаємо оплату</span></li>
+            <li data-commercial-id="kindergarden">Дитячий садок <span class="commercial-payment-status">Чекаємо оплату</span></li>
+            <li data-commercial-id="offices">Підвал з офісами <span class="commercial-payment-status">Чекаємо оплату</span></li>
+            <li data-commercial-id="stationery">Магазин канцелярії <span class="commercial-payment-status">Чекаємо оплату</span></li>
+        </ul>
+    </section>
 
     <section class="payment-details" id="payment-details" aria-labelledby="payment-details-title">
         <h2 id="payment-details-title">Реквізити</h2>
@@ -472,18 +540,6 @@
             <div>
                 <dt>Банк</dt>
                 <dd>АТ КБ «ПРИВАТБАНК»</dd>
-            </div>
-            <div>
-                <dt>Особовий рахунок</dt>
-                <dd>Вкажіть ваш особовий рахунок</dd>
-            </div>
-            <div>
-                <dt>Платник</dt>
-                <dd>ПІБ</dd>
-            </div>
-            <div>
-                <dt>Адреса платника</dt>
-                <dd>вул. Боголюбова 6, кв. ___</dd>
             </div>
             <div>
                 <dt>Призначення платежу</dt>
@@ -539,6 +595,7 @@
             { id: 4, cols: 8, rows: [ [11, 325, 326, 327, 328, 329, 330, 331, 332], [10, 265, 266, 267, 268, 269, 270, 271, 272], [9, 257, 258, 259, 260, 261, 262, 263, 264], [8, 249, 250, 251, 252, 253, 254, 255, 256], [7, 241, 242, 243, 244, 245, 246, 247, 248], [6, 233, 234, 235, 236, 237, 238, 239, 240], [5, 225, 226, 227, 228, 229, 230, 231, 232], [4, 217, 218, 219, 220, 221, 222, 223, 224], [3, 209, 210, 211, 212, 213, 214, 215, 216], [2, 201, 202, 203, 204, 205, 206, 207, 208], [1, 193, 194, 195, 196, 197, 198, 199, 200] ] },
             { id: 5, cols: 4, rows: [ [9, 333, 334, 335, 336], [8, 301, 302, 303, 304], [7, 297, 298, 299, 300], [6, 293, 294, 295, 296], [5, 289, 290, 291, 292], [4, 285, 286, 287, 288], [3, 281, 282, 283, 284], [2, 277, 278, 279, 280], [1, 273, 274, 275, 276] ] }
         ];
+        const commercialIds = new Set(['sofiafoods', 'kindergarden', 'offices', 'stationery']);
 
         async function fetchPaymentData() {
             try {
@@ -546,26 +603,31 @@
                 const csvText = await response.text();
                 
                 const paidApartments = new Set();
+                const commercialPayments = new Map();
                 const lines = csvText.split('\n');
                 
                 lines.forEach((line) => {
                     const columns = line.split(',');
                     if (columns.length >= 2) {
-                        const aptNum = parseInt(columns[0].trim());
-                        const amount = parseInt(columns[1].trim());
+                        const identifier = columns[0].trim().toLowerCase();
+                        const aptNum = parseInt(identifier, 10);
+                        const amount = Number(columns[1].trim().replace(/\s/g, ''));
                         if (!isNaN(aptNum) && amount === 1600) {
                             paidApartments.add(aptNum);
+                        }
+                        if (commercialIds.has(identifier) && Number.isFinite(amount) && amount > 0) {
+                            commercialPayments.set(identifier, amount);
                         }
                     }
                 });
                 
-                renderBuilding(paidApartments);
+                renderBuilding(paidApartments, commercialPayments);
             } catch (error) {
                 document.getElementById('loading').innerText = 'Помилка завантаження даних із Google Таблиці.';
             }
         }
 
-        function renderBuilding(paidSet) {
+        function renderBuilding(paidSet, commercialPayments) {
             const container = document.getElementById('building');
             container.innerHTML = '';
             let totalPaid = 0;
@@ -607,23 +669,34 @@
             const totalApartments = 336;
             const paymentPerApartment = 1600;
             const collectionTarget = totalApartments * paymentPerApartment;
-            const percent = Math.round((totalPaid / totalApartments) * 100);
+            const apartmentPercent = Math.round((totalPaid / totalApartments) * 100);
             document.getElementById('paid-count').innerText = totalPaid;
-            document.getElementById('paid-percent').innerText = `${percent}%`;
+            document.getElementById('paid-percent').innerText = `${apartmentPercent}%`;
             
             const unpaid = totalApartments - totalPaid;
             document.getElementById('unpaid-count').innerText = unpaid;
 
-            const collectedMoney = totalPaid * paymentPerApartment;
+            const commercialTotal = [...commercialPayments.values()].reduce((total, amount) => total + amount, 0);
+            const collectedMoney = (totalPaid * paymentPerApartment) + commercialTotal;
+            const moneyPercent = Math.min(100, Math.round((collectedMoney / collectionTarget) * 100));
             document.getElementById('collected-money').innerText = collectedMoney.toLocaleString('uk-UA') + ' грн';
             document.getElementById('collected-money-detail').innerText = collectedMoney.toLocaleString('uk-UA') + ' грн';
-            document.getElementById('collected-percent').innerText = `${percent}%`;
-            document.getElementById('remaining-money').innerText = (collectionTarget - collectedMoney).toLocaleString('uk-UA') + ' грн';
+            document.getElementById('collected-percent').innerText = `${moneyPercent}%`;
+            document.getElementById('remaining-money').innerText = Math.max(0, collectionTarget - collectedMoney).toLocaleString('uk-UA') + ' грн';
             document.getElementById('target-money').innerText = collectionTarget.toLocaleString('uk-UA') + ' грн';
             document.getElementById('target-money-detail').innerText = collectionTarget.toLocaleString('uk-UA') + ' грн';
             const progress = document.getElementById('collection-progress');
-            progress.style.width = `${percent}%`;
-            progress.parentElement.setAttribute('aria-valuenow', percent);
+            progress.style.width = `${moneyPercent}%`;
+            progress.parentElement.setAttribute('aria-valuenow', moneyPercent);
+
+            document.querySelectorAll('[data-commercial-id]').forEach((premises) => {
+                const amount = commercialPayments.get(premises.dataset.commercialId);
+                const status = premises.querySelector('.commercial-payment-status');
+                status.textContent = amount
+                    ? `Сплачено ${amount.toLocaleString('uk-UA')} грн`
+                    : 'Чекаємо оплату';
+                status.classList.toggle('is-paid', Boolean(amount));
+            });
 
             document.getElementById('loading').style.display = 'none';
             document.getElementById('building-wrapper').style.display = 'block';
