@@ -200,6 +200,30 @@
         .requisites-list div { padding: 14px 0; border-top: 1px solid var(--border-color); }
         .requisites-list dt { color: var(--muted); font-size: 11px; }
         .requisites-list dd { margin: 5px 0 0; color: var(--primary); font-size: 14px; font-weight: 700; overflow-wrap: anywhere; }
+        .requisite-value {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            justify-content: space-between;
+        }
+        .requisite-value span { flex: 1; }
+        .copy-requisite-button {
+            display: inline-flex;
+            width: 32px;
+            height: 32px;
+            flex: 0 0 auto;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            background: transparent;
+            color: var(--accent);
+            cursor: pointer;
+            transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+        }
+        .copy-requisite-button:hover { border-color: var(--accent); background: var(--accent); color: #17252c; }
+        .copy-requisite-button:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
+        .copy-requisite-button svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2; }
         .copy-requisites-button {
             display: flex;
             width: 100%;
@@ -523,27 +547,45 @@
         <dl class="requisites-list">
             <div>
                 <dt>Отримувач</dt>
-                <dd>ПП «ЖЕК «Оселя»</dd>
+                <dd class="requisite-value">
+                    <span>ПП «ЖЕК «Оселя»</span>
+                    <button class="copy-requisite-button" type="button" data-copy-value="ПП «ЖЕК «Оселя»" data-copy-label="отримувача" aria-label="Копіювати отримувача" title="Копіювати"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1"></rect><path d="M15 9V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h4"></path></svg></button>
+                </dd>
             </div>
             <div>
                 <dt>ЄДРПОУ</dt>
-                <dd>36448950</dd>
+                <dd class="requisite-value">
+                    <span>36448950</span>
+                    <button class="copy-requisite-button" type="button" data-copy-value="36448950" data-copy-label="ЄДРПОУ" aria-label="Копіювати ЄДРПОУ" title="Копіювати"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1"></rect><path d="M15 9V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h4"></path></svg></button>
+                </dd>
             </div>
             <div>
-                <dt>IBAN</dt>
-                <dd>UA713052990000026007000157186</dd>
+                <dt>Рахунок</dt>
+                <dd class="requisite-value">
+                    <span>UA713052990000026007000157186</span>
+                    <button class="copy-requisite-button" type="button" data-copy-value="UA713052990000026007000157186" data-copy-label="рахунок" aria-label="Копіювати рахунок" title="Копіювати"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1"></rect><path d="M15 9V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h4"></path></svg></button>
+                </dd>
             </div>
             <div>
                 <dt>МФО</dt>
-                <dd>305299</dd>
+                <dd class="requisite-value">
+                    <span>305299</span>
+                    <button class="copy-requisite-button" type="button" data-copy-value="305299" data-copy-label="МФО" aria-label="Копіювати МФО" title="Копіювати"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1"></rect><path d="M15 9V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h4"></path></svg></button>
+                </dd>
             </div>
             <div>
                 <dt>Банк</dt>
-                <dd>АТ КБ «ПРИВАТБАНК»</dd>
+                <dd class="requisite-value">
+                    <span>АТ КБ «ПРИВАТБАНК»</span>
+                    <button class="copy-requisite-button" type="button" data-copy-value="АТ КБ «ПРИВАТБАНК»" data-copy-label="банк" aria-label="Копіювати банк" title="Копіювати"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1"></rect><path d="M15 9V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h4"></path></svg></button>
+                </dd>
             </div>
             <div>
                 <dt>Призначення платежу</dt>
-                <dd>Благодійний внесок на ремонт насосної станції, о/р ___, вул. Боголюбова 6, кв. ___, ПІБ</dd>
+                <dd class="requisite-value">
+                    <span>Благодійний внесок на ремонт насосної станції, о/р ___, вул. Боголюбова 6, кв. ___, ПІБ</span>
+                    <button class="copy-requisite-button" type="button" data-copy-value="Благодійний внесок на ремонт насосної станції, о/р ___, вул. Боголюбова 6, кв. ___, ПІБ" data-copy-label="призначення платежу" aria-label="Копіювати призначення платежу" title="Копіювати"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="1"></rect><path d="M15 9V5a1 1 0 0 0-1-1H5a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h4"></path></svg></button>
+                </dd>
             </div>
         </dl>
         <button class="copy-requisites-button" id="copy-requisites" type="button" aria-describedby="copy-status">Копіювати реквізити</button>
@@ -705,7 +747,7 @@
         const requisitesText = [
             'Отримувач: ПП "ЖЕК "Оселя"',
             'ЄДРПОУ: 36448950',
-            'IBAN: UA713052990000026007000157186',
+            'Рахунок: UA713052990000026007000157186',
             'МФО: 305299',
             'Банк: АТ КБ "ПРИВАТБАНК"',
             'Призначення платежу: Благодійний внесок на ремонт насосної станції, о/р ___, вул. Боголюбова 6, кв. ___, ПІБ'
@@ -724,15 +766,19 @@
             return copied;
         }
 
+        async function copyText(text) {
+            if (navigator.clipboard && window.isSecureContext) {
+                await navigator.clipboard.writeText(text);
+            } else if (!copyWithFallback(text)) {
+                throw new Error('Copy is unavailable');
+            }
+        }
+
         const copyRequisitesButton = document.getElementById('copy-requisites');
         const copyStatus = document.getElementById('copy-status');
         copyRequisitesButton.addEventListener('click', async () => {
             try {
-                if (navigator.clipboard && window.isSecureContext) {
-                    await navigator.clipboard.writeText(requisitesText);
-                } else if (!copyWithFallback(requisitesText)) {
-                    throw new Error('Copy is unavailable');
-                }
+                await copyText(requisitesText);
 
                 copyRequisitesButton.textContent = 'Скопійовано';
                 copyStatus.textContent = 'Реквізити скопійовано в буфер обміну.';
@@ -742,6 +788,24 @@
             } catch (error) {
                 copyStatus.textContent = 'Не вдалося скопіювати. Скопіюйте реквізити вручну.';
             }
+        });
+
+        document.querySelectorAll('.copy-requisite-button').forEach((button) => {
+            button.addEventListener('click', async () => {
+                const label = button.dataset.copyLabel;
+                try {
+                    await copyText(button.dataset.copyValue);
+                    button.setAttribute('aria-label', `Скопійовано: ${label}`);
+                    button.title = 'Скопійовано';
+                    copyStatus.textContent = `${label.charAt(0).toUpperCase() + label.slice(1)} скопійовано в буфер обміну.`;
+                    window.setTimeout(() => {
+                        button.setAttribute('aria-label', `Копіювати ${label}`);
+                        button.title = 'Копіювати';
+                    }, 2000);
+                } catch (error) {
+                    copyStatus.textContent = `Не вдалося скопіювати ${label}. Скопіюйте значення вручну.`;
+                }
+            });
         });
 
         const viberGroupQrRows = [
