@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Оселя</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <style>
+        :root {
+            --primary: #f4f5ed;
+            --accent: #d4ad54;
+            --bg-color: #0b1c26;
+            --card-bg: #122934;
+            --border-color: #28414d;
+            --muted: #91a2a7;
+        }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0 20px 40px;
+            color: var(--primary);
+        }
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+        }
+        /* Хедер */
+        header {
+            padding: 82px 20px 12px;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+        }
+        .header-title-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .header-icon { display: none; }
+        header h1 { margin: 0; max-width: 760px; font-size: clamp(30px, 5vw, 50px); font-weight: 700; letter-spacing: -1.8px; line-height: 1.05; }
+        header p { margin: 14px 0 0; font-size: 13px; color: var(--muted); }
+
+        .notice {
+            max-width: 740px;
+            margin: 0 auto 38px;
+            padding: 12px 20px;
+            text-align: center;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+        .notice h2 {
+            margin: 0 0 10px;
+            color: var(--accent);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+        }
+        .notice p { margin: 0; font-size: 13px; }
+        .notice-documents-link {
+            display: inline-flex;
+            margin-top: 16px;
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 800;
+            text-decoration: none;
+        }
+        .notice-documents-link:hover { text-decoration: underline; }
+        .notice-documents-link:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
+        
+        .header-links {
+            display: flex;
+            gap: 12px;
+        }
+        .btn-link {
+            background: #1e293b;
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            border: 1px solid #334155;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.2s;
+        }
+        .btn-link:hover { background: #334155; }
+        .btn-green { background: #15803d; border-color: #166534; }
+        .btn-green:hover { background: #166534; }
+
+        /* Статистика (Картки) */
+        .collection-summary {
+            background: var(--card-bg);
+            max-width: 760px;
+            margin: 0 auto 48px;
+            padding: 28px 30px;
+            border-radius: 10px;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+            border: 1px solid var(--border-color);
+        }
+        .collection-eyebrow {
+            margin: 0 0 8px;
+            color: var(--accent);
+            font-size: 10px;
+            font-weight: 800;
+            letter-spacing: 1.3px;
+            text-align: center;
+            text-transform: uppercase;
+        }
+        .collection-total {
+            display: flex;
+            justify-content: center;
+            align-items: baseline;
+            gap: 8px;
+            margin-bottom: 18px;
+            color: var(--primary);
+        }
+        .collection-total strong {
+            color: var(--primary);
+            font-size: clamp(32px, 5vw, 46px);
+            letter-spacing: -1.5px;
+        }
+        .collection-total span { color: var(--muted); font-size: 14px; }
+        .progress-description {
+            margin: 0 0 8px;
+            color: var(--muted);
+            font-size: 12px;
+            text-align: center;
+        }
+        .progress-description strong { color: var(--primary); }
+        .progress-track { height: 5px; margin: 0 0 22px; overflow: hidden; background: #203b47; border-radius: 999px; }
+        .progress-track span { display: block; width: 0; height: 100%; background: var(--accent); border-radius: inherit; transition: width 0.4s ease; }
+        .summary-details {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+            border-top: 1px solid var(--border-color);
+        }
+        .summary-item { padding: 14px 12px 0; border-right: 1px solid var(--border-color); }
+        .summary-item:nth-child(3n) { border-right: 0; }
+        .summary-label { display: block; color: var(--muted); font-size: 11px; }
+        .summary-value { display: block; margin-top: 4px; color: var(--primary); font-size: 15px; font-weight: 800; }
+        .summary-percent { color: var(--accent); font-size: 11px; font-weight: 700; }
+
+        .pay-button {
+            display: flex;
+            width: fit-content;
+            margin: 24px auto 0;
+            padding: 12px 28px;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            background: var(--accent);
+            color: #17252c;
+            font-size: 14px;
+            font-weight: 800;
+            text-decoration: none;
+            transition: background 0.2s ease, transform 0.2s ease;
+        }
+        .pay-button:hover { background: #e4bf6a; transform: translateY(-1px); }
+        .pay-button:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
+
+        .payment-details {
+            max-width: 760px;
+            margin: 48px auto 0;
+            padding: 32px 30px;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            background: var(--card-bg);
+        }
+        .payment-details h2 {
+            margin: 0;
+            color: var(--primary);
+            font-size: clamp(24px, 4vw, 32px);
+            letter-spacing: -0.8px;
+            text-align: center;
+        }
+        .payment-details > p {
+            margin: 10px 0 26px;
+            color: var(--muted);
+            font-size: 13px;
+            text-align: center;
+        }
+        .payment-amount {
+            margin-bottom: 22px;
+            padding: 18px;
+            border-radius: 6px;
+            background: #1c3541;
+            text-align: center;
+        }
+        .payment-amount span { display: block; color: var(--muted); font-size: 11px; }
+        .payment-amount strong { display: block; margin-top: 4px; color: var(--accent); font-size: 32px; letter-spacing: -1px; }
+        .requisites-list { margin: 0; }
+        .requisites-list div { padding: 14px 0; border-top: 1px solid var(--border-color); }
+        .requisites-list dt { color: var(--muted); font-size: 11px; }
+        .requisites-list dd { margin: 5px 0 0; color: var(--primary); font-size: 14px; font-weight: 700; overflow-wrap: anywhere; }
+        .copy-requisites-button {
+            display: flex;
+            width: 100%;
+            margin-top: 20px;
+            padding: 12px 16px;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--accent);
+            border-radius: 6px;
+            background: transparent;
+            color: var(--accent);
+            font: inherit;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+        .copy-requisites-button:hover { background: var(--accent); color: #17252c; }
+        .copy-requisites-button:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
+        .copy-status { min-height: 18px; margin: 8px 0 0; color: var(--muted); font-size: 12px; text-align: center; }
+        .payment-note {
+            margin: 22px 0 0;
+            padding: 12px 14px;
+            border-left: 3px solid var(--accent);
+            background: #172e39;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        .initiative-group {
+            max-width: 760px;
+            margin: 48px auto 0;
+            padding: 32px 30px;
+            border-top: 1px solid var(--border-color);
+        }
+        .initiative-group h2 {
+            margin: 0;
+            color: var(--primary);
+            font-size: clamp(24px, 4vw, 32px);
+            letter-spacing: -0.8px;
+            text-align: center;
+        }
+        .initiative-group > p {
+            margin: 10px 0 24px;
+            color: var(--muted);
+            font-size: 13px;
+            text-align: center;
+        }
+        .contact-list {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+        .contact-card {
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: #102630;
+        }
+        .contact-card h3 { margin: 0 0 8px; color: var(--primary); font-size: 15px; }
+        .contact-card a {
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .contact-card a:hover { text-decoration: underline; }
+        .viber-group-invite {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            margin-top: 24px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--card-bg);
+        }
+        .viber-qr {
+            flex: 0 0 148px;
+            width: 148px;
+            height: 148px;
+            padding: 8px;
+            border-radius: 4px;
+            background: #fff;
+            box-sizing: border-box;
+        }
+        .viber-group-invite h3 { margin: 0 0 8px; color: var(--primary); font-size: 18px; }
+        .viber-group-invite p { margin: 0 0 14px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+        .viber-group-link { color: var(--accent); font-size: 13px; font-weight: 800; text-decoration: none; }
+        .viber-group-link:hover { text-decoration: underline; }
+        
+        /* Схема будинку */
+        .building-wrapper {
+            background: transparent;
+            padding: 24px;
+            border-top: 1px solid var(--border-color);
+            overflow: hidden;
+            container-type: inline-size;
+        }
+        .building-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            align-items: flex-end;
+            padding-bottom: 10px;
+        }
+        .section {
+            max-width: 100%;
+            border: 2px solid #38525d;
+            border-top-width: 6px;
+            padding: 8px;
+            background: #1c3541;
+            border-radius: 2px 2px 0 0;
+        }
+        .section-title {
+            text-align: center;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #b7c5c6;
+        }
+        .grid {
+            display: grid;
+            gap: 3px;
+        }
+        
+        /* Клітинка квартири */
+        .apt {
+            width: clamp(19px, 1.8cqw, 24px);
+            height: clamp(18px, 1.6cqw, 22px);
+            font-size: clamp(7px, 0.8cqw, 10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 1px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .apt:hover {
+            transform: scale(1.2);
+            z-index: 10;
+            box-shadow: 0 0 0 2px rgba(242, 210, 114, 0.25);
+        }
+        .paid {
+            background-color: #f2d272;
+            color: #26343a;
+            border: 1px solid #f7dda0;
+        }
+        .unpaid {
+            background-color: #28434e;
+            color: #a7b5b7;
+            border: 1px solid #36535e;
+        }
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 18px;
+            color: var(--muted);
+        }
+        @media (max-width: 640px) {
+            body { padding: 0 12px 28px; }
+            header { padding: 52px 8px 8px; }
+            header h1 { letter-spacing: -1px; }
+            .notice { padding: 12px 8px; margin-bottom: 28px; }
+            .collection-summary { margin-bottom: 32px; padding: 22px 16px; }
+            .payment-details { margin-top: 32px; padding: 24px 16px; }
+            .initiative-group { margin-top: 32px; padding: 24px 16px; }
+            .contact-list { grid-template-columns: 1fr; }
+            .viber-group-invite { align-items: flex-start; gap: 16px; padding: 16px; }
+            .viber-qr { flex-basis: 120px; width: 120px; height: 120px; }
+            .summary-details { grid-template-columns: repeat(2, 1fr); }
+            .summary-item:nth-child(3n) { border-right: 1px solid var(--border-color); }
+            .summary-item:nth-child(2n) { border-right: 0; }
+            .building-wrapper { padding: 18px 0; }
+            .building-container { gap: 12px; justify-content: center; }
+            .apt { width: clamp(20px, 8vw, 25px); height: clamp(19px, 7vw, 23px); font-size: 9px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="header-title-wrapper">
+            <div class="header-icon">
+                <svg width="24" height="24" fill="none" stroke="#38bdf8" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            </div>
+            <div>
+                <h1>Збір коштів на ремонт насосної станції</h1>
+                <p>ЖК "Софіївська слобідка" — Боголюбова 6 (336 квартир), Боголюбова 4 (244 квартир)</p>
+            </div>
+        </div>
+    </header>
+
+    <section class="notice" aria-labelledby="notice-title">
+        <h2 id="notice-title">До уваги жильців та власників комерційних приміщень будинків 4 і 6</h2>
+        <p>Насосна станція, яка подає воду в два наші будинки, потребує невідкладного капітального ремонту. Ініціативна група жильців двох наших будинків та ЖЕК «Оселя» організували терміновий збір коштів для закупівлі необхідних матеріалів та виконання робіт. Просимо долучитись до збору всіх жильців. Наш будинок — наша відповідальність.</p>
+        <a class="notice-documents-link" href="https://drive.google.com/drive/folders/19ZmqgvxX_Td37kxXgvmu2iJoo7S8sifN?usp=sharing" target="_blank" rel="noopener noreferrer">Переглянути документи щодо ремонту</a>
+    </section>
+
+    <section class="collection-summary" aria-label="Стан збору коштів">
+        <p class="collection-eyebrow">Зібрано на ремонт насосної станції</p>
+        <div class="collection-total">
+            <strong id="collected-money">0 грн</strong>
+            <span>/ <span id="target-money">537 600 грн</span></span>
+        </div>
+        <p class="progress-description">Наш прогрес: <strong id="paid-percent">0%</strong> квартир долучились, <strong id="collected-percent">0%</strong> суми зібрали</p>
+        <div class="progress-track" role="progressbar" aria-label="Прогрес збору коштів" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <span id="collection-progress"></span>
+        </div>
+        <div class="summary-details">
+            <div class="summary-item">
+                <span class="summary-label">Долучились</span>
+                <span class="summary-value"><span id="paid-count">0</span> квартир</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Чекаємо</span>
+                <span class="summary-value"><span id="unpaid-count">336</span> квартир</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Ціль збору</span>
+                <span class="summary-value" id="target-money-detail">537 600 грн</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Зібрано</span>
+                <span class="summary-value" id="collected-money-detail">0 грн</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Залишається зібрати</span>
+                <span class="summary-value" id="remaining-money">537 600 грн</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">З квартири</span>
+                <span class="summary-value">1 600 грн</span>
+            </div>
+        </div>
+        <a class="pay-button" href="#payment-details">Сплатити</a>
+    </section>
+
+    <div id="loading" class="loading">Завантаження даних із Google Таблиці...</div>
+    
+    <div class="building-wrapper" id="building-wrapper" style="display: none;">
+        <div class="building-container" id="building"></div>
+    </div>
+
+    <section class="payment-details" id="payment-details" aria-labelledby="payment-details-title">
+        <h2 id="payment-details-title">Реквізити</h2>
+        <p>Для внеску на ремонт насосної станції</p>
+        <div class="payment-amount">
+            <span>Рекомендований внесок з квартири</span>
+            <strong>1 600 грн</strong>
+        </div>
+        <dl class="requisites-list">
+            <div>
+                <dt>Отримувач</dt>
+                <dd>ПП «ЖЕК «Оселя»</dd>
+            </div>
+            <div>
+                <dt>ЄДРПОУ</dt>
+                <dd>36448950</dd>
+            </div>
+            <div>
+                <dt>IBAN</dt>
+                <dd>UA713052990000026007000157186</dd>
+            </div>
+            <div>
+                <dt>МФО</dt>
+                <dd>305299</dd>
+            </div>
+            <div>
+                <dt>Банк</dt>
+                <dd>АТ КБ «ПРИВАТБАНК»</dd>
+            </div>
+            <div>
+                <dt>Особовий рахунок</dt>
+                <dd>Вкажіть ваш особовий рахунок</dd>
+            </div>
+            <div>
+                <dt>Платник</dt>
+                <dd>ПІБ</dd>
+            </div>
+            <div>
+                <dt>Адреса платника</dt>
+                <dd>вул. Боголюбова 6, кв. ___</dd>
+            </div>
+            <div>
+                <dt>Призначення платежу</dt>
+                <dd>Благодійний внесок на ремонт насосної станції, о/р ___, вул. Боголюбова 6, кв. ___, ПІБ</dd>
+            </div>
+        </dl>
+        <button class="copy-requisites-button" id="copy-requisites" type="button" aria-describedby="copy-status">Копіювати реквізити</button>
+        <p class="copy-status" id="copy-status" aria-live="polite"></p>
+        <p class="payment-note">Будь ласка, заповнюйте номер особового рахунку, квартири та ПІБ платника, щоб ми могли коректно зарахувати внесок.</p>
+    </section>
+
+    <section class="initiative-group" aria-labelledby="initiative-group-title">
+        <h2 id="initiative-group-title">Ініціативна група</h2>
+        <p>Контактні особи будинку на вул. Боголюбова, 6</p>
+        <div class="contact-list">
+            <article class="contact-card">
+                <h3>Філіпович П. В.</h3>
+                <a href="viber://chat?number=%2B380631965557">Viber: +380 63 196 5557</a>
+            </article>
+            <article class="contact-card">
+                <h3>Рупенко Б. Ю.</h3>
+                <a href="viber://chat?number=%2B380686917137">Viber: +380 68 691 7137</a>
+            </article>
+            <article class="contact-card">
+                <h3>Нечипоренко О. В.</h3>
+                <a href="viber://chat?number=%2B380979227680">Viber: +380 97 922 7680</a>
+            </article>
+            <article class="contact-card">
+                <h3>Романченко І. Г.</h3>
+                <a href="viber://chat?number=%2B380672779484">Viber: +380 67 277 9484</a>
+            </article>
+        </div>
+        <div class="viber-group-invite">
+            <div class="viber-qr" id="viber-group-qr" role="img" aria-label="QR-код для приєднання до Viber-групи будинку"></div>
+            <div>
+                <h3>Приєднуйтесь до Viber-групи будинку</h3>
+                <p>Відскануйте QR-код камерою телефона, щоб перейти за запрошенням до групи.</p>
+                <a class="viber-group-link" href="https://invite.viber.com/?g2=AQANuF9Vrh9P9FFCwmHEqjS6suXbzXvIGOAnv%2Fxshw%2F2CGtzN6oWeOW2qTuVJ2k1" target="_blank" rel="noopener noreferrer">Відкрити запрошення у Viber</a>
+            </div>
+        </div>
+    </section>
+</div>
+
+    <script>
+        // ВСТАВТЕ ВАШЕ ПОСИЛАННЯ НА CSV З GOOGLE SHEETS ТУТ:
+        //const GOOGLE_SHEET_CSV_URL = 'bogolyubova_6.csv';
+        const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRFVsMxOUVpP8qht6Y9OhMq0T_STDaC4dR_GEWqJ2_hcfNEsmYJ9BaN4GVj_dapp5qRTRYWeLOaH4Ur/pub?gid=1664241156&single=true&output=csv';
+
+        const sectionsData = [
+            { id: 1, cols: 4, rows: [ [9, 305, 306, 307, 308], [8, 29, 30, 31, 32], [7, 25, 26, 27, 28], [6, 21, 22, 23, 24], [5, 17, 18, 19, 20], [4, 13, 14, 15, 16], [3, 9, 10, 11, 12], [2, 5, 6, 7, 8], [1, 1, 2, 3, 4] ] },
+            { id: 2, cols: 8, rows: [ [11, 309, 310, 311, 312, 313, 314, 315, 316], [10, 105, 106, 107, 108, 109, 110, 111, 112], [9, 97, 98, 99, 100, 101, 102, 103, 104], [8, 89, 90, 91, 92, 93, 94, 95, 96], [7, 81, 82, 83, 84, 85, 86, 87, 88], [6, 73, 74, 75, 76, 77, 78, 79, 80], [5, 65, 66, 67, 68, 69, 70, 71, 72], [4, 57, 58, 59, 60, 61, 62, 63, 64], [3, 49, 50, 51, 52, 53, 54, 55, 56], [2, 41, 42, 43, 44, 45, 46, 47, 48], [1, 33, 34, 35, 36, 37, 38, 39, 40] ] },
+            { id: 3, cols: 8, rows: [ [11, 317, 318, 319, 320, 321, 322, 323, 324], [10, 185, 186, 187, 188, 189, 190, 191, 192], [9, 177, 178, 179, 180, 181, 182, 183, 184], [8, 169, 170, 171, 172, 173, 174, 175, 176], [7, 161, 162, 163, 164, 165, 166, 167, 168], [6, 153, 154, 155, 156, 157, 158, 159, 160], [5, 145, 146, 147, 148, 149, 150, 151, 152], [4, 137, 138, 139, 140, 141, 142, 143, 144], [3, 129, 130, 131, 132, 133, 134, 135, 136], [2, 121, 122, 123, 124, 125, 126, 127, 128], [1, 113, 114, 115, 116, 117, 118, 119, 120] ] },
+            { id: 4, cols: 8, rows: [ [11, 325, 326, 327, 328, 329, 330, 331, 332], [10, 265, 266, 267, 268, 269, 270, 271, 272], [9, 257, 258, 259, 260, 261, 262, 263, 264], [8, 249, 250, 251, 252, 253, 254, 255, 256], [7, 241, 242, 243, 244, 245, 246, 247, 248], [6, 233, 234, 235, 236, 237, 238, 239, 240], [5, 225, 226, 227, 228, 229, 230, 231, 232], [4, 217, 218, 219, 220, 221, 222, 223, 224], [3, 209, 210, 211, 212, 213, 214, 215, 216], [2, 201, 202, 203, 204, 205, 206, 207, 208], [1, 193, 194, 195, 196, 197, 198, 199, 200] ] },
+            { id: 5, cols: 4, rows: [ [9, 333, 334, 335, 336], [8, 301, 302, 303, 304], [7, 297, 298, 299, 300], [6, 293, 294, 295, 296], [5, 289, 290, 291, 292], [4, 285, 286, 287, 288], [3, 281, 282, 283, 284], [2, 277, 278, 279, 280], [1, 273, 274, 275, 276] ] }
+        ];
+
+        async function fetchPaymentData() {
+            try {
+                const response = await fetch(GOOGLE_SHEET_CSV_URL);
+                const csvText = await response.text();
+                
+                const paidApartments = new Set();
+                const lines = csvText.split('\n');
+                
+                lines.forEach((line) => {
+                    const columns = line.split(',');
+                    if (columns.length >= 2) {
+                        const aptNum = parseInt(columns[0].trim());
+                        const amount = parseInt(columns[1].trim());
+                        if (!isNaN(aptNum) && amount === 1600) {
+                            paidApartments.add(aptNum);
+                        }
+                    }
+                });
+                
+                renderBuilding(paidApartments);
+            } catch (error) {
+                document.getElementById('loading').innerText = 'Помилка завантаження даних із Google Таблиці.';
+            }
+        }
+
+        function renderBuilding(paidSet) {
+            const container = document.getElementById('building');
+            container.innerHTML = '';
+            let totalPaid = 0;
+
+            sectionsData.forEach(sec => {
+                const secDiv = document.createElement('div');
+                secDiv.className = 'section';
+                secDiv.innerHTML = `<div class="section-title">Секція ${sec.id}</div>`;
+
+                const grid = document.createElement('div');
+                grid.className = 'grid';
+                grid.style.gridTemplateColumns = `repeat(${sec.cols}, 1fr)`;
+
+                sec.rows.forEach(row => {
+                    for (let i = 1; i < row.length; i++) {
+                        const aptNum = row[i];
+                        const aptDiv = document.createElement('div');
+                        aptDiv.className = 'apt';
+                        aptDiv.innerText = aptNum;
+                        aptDiv.id = `apt-${aptNum}`;
+
+                        if (paidSet.has(aptNum)) {
+                            aptDiv.classList.add('paid');
+                            aptDiv.title = `Кв. ${aptNum}: Сплачено 1600 грн`;
+                            totalPaid++;
+                        } else {
+                            aptDiv.classList.add('unpaid');
+                            aptDiv.title = `Кв. ${aptNum}: Немає оплати`;
+                        }
+
+                        grid.appendChild(aptDiv);
+                    }
+                });
+
+                secDiv.appendChild(grid);
+                container.appendChild(secDiv);
+            });
+
+            const totalApartments = 336;
+            const paymentPerApartment = 1600;
+            const collectionTarget = totalApartments * paymentPerApartment;
+            const percent = Math.round((totalPaid / totalApartments) * 100);
+            document.getElementById('paid-count').innerText = totalPaid;
+            document.getElementById('paid-percent').innerText = `${percent}%`;
+            
+            const unpaid = totalApartments - totalPaid;
+            document.getElementById('unpaid-count').innerText = unpaid;
+
+            const collectedMoney = totalPaid * paymentPerApartment;
+            document.getElementById('collected-money').innerText = collectedMoney.toLocaleString('uk-UA') + ' грн';
+            document.getElementById('collected-money-detail').innerText = collectedMoney.toLocaleString('uk-UA') + ' грн';
+            document.getElementById('collected-percent').innerText = `${percent}%`;
+            document.getElementById('remaining-money').innerText = (collectionTarget - collectedMoney).toLocaleString('uk-UA') + ' грн';
+            document.getElementById('target-money').innerText = collectionTarget.toLocaleString('uk-UA') + ' грн';
+            document.getElementById('target-money-detail').innerText = collectionTarget.toLocaleString('uk-UA') + ' грн';
+            const progress = document.getElementById('collection-progress');
+            progress.style.width = `${percent}%`;
+            progress.parentElement.setAttribute('aria-valuenow', percent);
+
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('building-wrapper').style.display = 'block';
+        }
+
+        const requisitesText = [
+            'Отримувач: ПП "ЖЕК "Оселя"',
+            'ЄДРПОУ: 36448950',
+            'IBAN: UA713052990000026007000157186',
+            'МФО: 305299',
+            'Банк: АТ КБ "ПРИВАТБАНК"',
+            'Призначення платежу: Благодійний внесок на ремонт насосної станції, о/р ___, вул. Боголюбова 6, кв. ___, ПІБ'
+        ].join('\n');
+
+        function copyWithFallback(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.setAttribute('readonly', '');
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            const copied = document.execCommand('copy');
+            textarea.remove();
+            return copied;
+        }
+
+        const copyRequisitesButton = document.getElementById('copy-requisites');
+        const copyStatus = document.getElementById('copy-status');
+        copyRequisitesButton.addEventListener('click', async () => {
+            try {
+                if (navigator.clipboard && window.isSecureContext) {
+                    await navigator.clipboard.writeText(requisitesText);
+                } else if (!copyWithFallback(requisitesText)) {
+                    throw new Error('Copy is unavailable');
+                }
+
+                copyRequisitesButton.textContent = 'Скопійовано';
+                copyStatus.textContent = 'Реквізити скопійовано в буфер обміну.';
+                window.setTimeout(() => {
+                    copyRequisitesButton.textContent = 'Копіювати реквізити';
+                }, 2000);
+            } catch (error) {
+                copyStatus.textContent = 'Не вдалося скопіювати. Скопіюйте реквізити вручну.';
+            }
+        });
+
+        const viberGroupQrRows = [
+            '11111110001100100110111101100010101111111', '10000010010001010100010011011110101000001', '10111010101010001111011010011011101011101', '10111010110011111000010101011100101011101', '10111010100001100111111100111101001011101', '10000010110001001000111000111010001000001', '11111110101010101010101010101010101111111', '00000000100010001000011110110001100000000', '10111110011001000110001011000100001111100', '00010101100111010111111100001111100110110', '11110011110101101110101010010010100000000', '01110000010100010011111110011001101001011', '01111011110110101001101011010001100011111', '10101100101100110000010000111101011110001', '01011011000010001110101111010100110110100', '00101101000101011000011100001001101010001', '11011111111110010000100110110000010101110', '00001000100100001011000100000010101111001', '11101111100101111010001001010010110011010', '00010001011001001001100110001000000011001', '11100110000000011010111011111001000111000', '00110001101101111101110001000100110111111', '01110010011110100100100011110100111100100', '10001101111100101000110100010010110100000', '01110111011011011110000011101100000101110', '01100001010011100001100101101001001111001', '01110011000100100110111000011100100000000', '01001001000110000001011010110011100011010', '11111010110001011110011110101101100111100', '10111000110011111000110010011000110111101', '10010111001010000101011001111010111111000', '10011000110001100001111010011001111011011', '10011111111100101101000001111101111110000', '00000000100111010100111101101010100010111', '11111110000111010100010011010000101010000', '10000010101000100111011010101011100011001', '10111010111000111000010111000100111110101', '10111010100010100110101000101000110101011', '10111010111011000010001011110101011110100', '10000010001010101100010100000011101011010', '11111110100001010101001011110101011110100'
+        ];
+        const qrQuietZone = 4;
+        const qrSize = viberGroupQrRows.length + qrQuietZone * 2;
+        const viberQrContainer = document.getElementById('viber-group-qr');
+        const qrSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        qrSvg.setAttribute('viewBox', `0 0 ${qrSize} ${qrSize}`);
+        qrSvg.setAttribute('width', '100%');
+        qrSvg.setAttribute('height', '100%');
+        qrSvg.setAttribute('shape-rendering', 'crispEdges');
+        qrSvg.setAttribute('aria-hidden', 'true');
+        const qrBackground = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+        qrBackground.setAttribute('width', qrSize);
+        qrBackground.setAttribute('height', qrSize);
+        qrBackground.setAttribute('fill', '#ffffff');
+        qrSvg.appendChild(qrBackground);
+        const qrModules = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        let qrPath = '';
+        viberGroupQrRows.forEach((row, y) => {
+            [...row].forEach((cell, x) => {
+                if (cell === '1') qrPath += `M${x + qrQuietZone},${y + qrQuietZone}h1v1h-1z`;
+            });
+        });
+        qrModules.setAttribute('d', qrPath);
+        qrModules.setAttribute('fill', '#000000');
+        qrSvg.appendChild(qrModules);
+        viberQrContainer.appendChild(qrSvg);
+
+        fetchPaymentData();
+    </script>
+</body>
+</html>
