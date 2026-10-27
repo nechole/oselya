@@ -40,7 +40,7 @@
         }
         .header-icon { display: none; }
         header h1 { margin: 0; max-width: 760px; font-size: clamp(30px, 5vw, 50px); font-weight: 700; letter-spacing: -1.8px; line-height: 1.05; }
-        header p { margin: 14px 0 0; font-size: 13px; color: var(--muted); }
+        header p { margin: 14px 0 0; font-size: 14px; color: var(--muted); }
 
         .notice {
             max-width: 740px;
@@ -58,7 +58,7 @@
             letter-spacing: 1.4px;
             text-transform: uppercase;
         }
-        .notice p { margin: 0; font-size: 13px; }
+        .notice p { margin: 0; font-size: 14px; }
         .notice-inline-link { color: var(--accent); font-weight: 700; }
         .notice-inline-link:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
         .notice-documents-link {
@@ -127,10 +127,12 @@
             letter-spacing: -1.5px;
         }
         .collection-total span { color: var(--muted); font-size: 14px; }
+        .payment-update-date { margin: -10px 0 16px; color: var(--muted); font-size: 12px; text-align: center; }
+        .payment-update-date time { color: var(--primary); font-weight: 700; }
         .progress-description {
             margin: 0 0 8px;
             color: var(--muted);
-            font-size: 12px;
+            font-size: 14px;
             text-align: center;
         }
         .progress-description strong { color: var(--primary); }
@@ -147,7 +149,6 @@
         .summary-label { display: block; color: var(--muted); font-size: 11px; }
         .summary-value { display: block; margin-top: 4px; color: var(--primary); font-size: 15px; font-weight: 800; }
         .summary-percent { color: var(--accent); font-size: 11px; font-weight: 700; }
-
         .pay-button {
             display: flex;
             width: fit-content;
@@ -184,7 +185,7 @@
         .payment-details > p {
             margin: 10px 0 26px;
             color: var(--muted);
-            font-size: 13px;
+            font-size: 14px;
             text-align: center;
         }
         .payment-amount {
@@ -250,9 +251,12 @@
             border-left: 3px solid var(--accent);
             background: #172e39;
             color: var(--muted);
-            font-size: 12px;
+            font-size: 14px;
             line-height: 1.5;
         }
+        .payment-note strong { color: var(--accent); font-size: 1.1em; }
+        .payment-note a { color: var(--accent); font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
+        .payment-note a:focus-visible { outline: 3px solid var(--primary); outline-offset: 3px; }
         .initiative-group {
             max-width: 760px;
             margin: 48px auto 0;
@@ -269,7 +273,7 @@
         .initiative-group > p {
             margin: 10px 0 24px;
             color: var(--muted);
-            font-size: 13px;
+            font-size: 14px;
             text-align: center;
         }
         .contact-list {
@@ -286,7 +290,7 @@
         .contact-card h3 { margin: 0 0 8px; color: var(--primary); font-size: 15px; }
         .contact-card a {
             color: var(--accent);
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 700;
             text-decoration: none;
         }
@@ -311,8 +315,8 @@
             box-sizing: border-box;
         }
         .viber-group-invite h3 { margin: 0 0 8px; color: var(--primary); font-size: 18px; }
-        .viber-group-invite p { margin: 0 0 14px; color: var(--muted); font-size: 13px; line-height: 1.5; }
-        .viber-group-link { color: var(--accent); font-size: 13px; font-weight: 800; text-decoration: none; }
+        .viber-group-invite p { margin: 0 0 14px; color: var(--muted); font-size: 14px; line-height: 1.5; }
+        .viber-group-link { color: var(--accent); font-size: 14px; font-weight: 800; text-decoration: none; }
         .viber-group-link:hover { text-decoration: underline; }
         
         /* Схема будинку */
@@ -332,6 +336,15 @@
             color: var(--primary);
             font-size: 24px;
             text-align: center;
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 8px;
+        }
+        .building-paid-count {
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 700;
         }
         .building-container {
             display: flex;
@@ -353,7 +366,7 @@
         }
         .section-title {
             text-align: center;
-            font-size: 13px;
+            font-size: 14px;
             font-weight: 700;
             margin-bottom: 10px;
             color: #b7c5c6;
@@ -375,6 +388,7 @@
             font-weight: 700;
             cursor: pointer;
             transition: all 0.15s ease;
+            position: relative;
         }
         .apt:hover {
             transform: scale(1.2);
@@ -390,6 +404,21 @@
             background-color: #28434e;
             color: #a7b5b7;
             border: 1px solid #36535e;
+        }
+        .partially-paid {
+            background-color: #bae6fd;
+            color: #0c4a6e;
+            border: 1px solid #7dd3fc;
+        }
+        .overpaid::after {
+            content: '★';
+            position: absolute;
+            top: -8px;
+            right: -6px;
+            color: #facc15;
+            font-size: 14px;
+            line-height: 1;
+            text-shadow: 0 0 2px #713f12;
         }
         .loading {
             text-align: center;
@@ -467,26 +496,27 @@
             </div>
             <div>
                 <h1>Збір коштів на ремонт насосної станції</h1>
-                <p>ЖК "Софіївська слобідка" — Боголюбова 6 (336 квартир), Боголюбова 4 (244 квартир)</p>
+                <p>ЖК "Софіївська слобідка": Боголюбова 6 (336 квартир), Боголюбова 4 (175 квартир)</p>
             </div>
         </div>
     </header>
 
     <section class="notice" aria-labelledby="notice-title">
-        <h2 id="notice-title">До уваги жильців та власників комерційних приміщень будинків 4 і 6</h2>
-        <p><a class="notice-inline-link" href="https://drive.google.com/file/d/17lMvW5CKyBp3f09Lf0y5aYQc0idxh5Cs/view?usp=sharing" target="_blank" rel="noopener noreferrer">Насосна станція</a>, яка подає воду в два наші будинки, потребує невідкладного капітального ремонту. Ініціативна група жильців двох наших будинків та ЖЕК «Оселя» організували терміновий збір коштів для закупівлі необхідних матеріалів та виконання робіт.<br>Просимо долучитись до збору всіх жильців. </p>
+        <h2 id="notice-title">До уваги всіх мешканців квартир та власників комерційних приміщень будинків 4 і 6</h2>
+        <p><a class="notice-inline-link" href="https://drive.google.com/file/d/17lMvW5CKyBp3f09Lf0y5aYQc0idxh5Cs/view?usp=sharing" target="_blank" rel="noopener noreferrer">Насосна станція</a>, яка подає воду в наші будинки, потребує невідкладного капітального ремонту. Ініціативна група мешканців та ЖЕК «Оселя» організували терміновий збір коштів для закупівлі необхідних матеріалів та виконання ремонтних робіт. Просимо всіх зробити свій внесок за реквізитами вказаними нижче.</p>
         <p>Наш будинок — наша відповідальність.</p>
         <a class="notice-documents-link" href="https://drive.google.com/drive/folders/19ZmqgvxX_Td37kxXgvmu2iJoo7S8sifN?usp=sharing" target="_blank" rel="noopener noreferrer">Переглянути документи щодо ремонту</a>
     </section>
 
     <section class="collection-summary" aria-label="Стан збору коштів">
+        <p class="payment-update-date">Інформація на: <time id="payment-update-date">—</time></p>
         <p class="collection-eyebrow">Зібрано на ремонт насосної станції</p>
         <div class="collection-total">
             <strong id="collected-money">0 грн</strong>
-            <span>/ <span id="target-money">537 600 грн</span></span>
+            <span>/ <span id="target-money">720 000 грн</span></span>
         </div>
         <p class="progress-description">Наш прогрес: <strong id="paid-percent">0%</strong> квартир долучились, <strong id="collected-percent">0%</strong> суми зібрали</p>
-        <div class="progress-track" role="progressbar" aria-label="Прогрес збору коштів" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div class="progress-track" role="progressbar" aria-label="Прогрес збору коштів" aria-valuemin="0" aria-valuemax="100" ariavaluenow="0">
             <span id="collection-progress"></span>
         </div>
         <div class="summary-details">
@@ -500,7 +530,7 @@
             </div>
             <div class="summary-item">
                 <span class="summary-label">Ціль збору</span>
-                <span class="summary-value" id="target-money-detail">537 600 грн</span>
+                <span class="summary-value" id="target-money-detail">720 000 грн</span>
             </div>
             <div class="summary-item">
                 <span class="summary-label">Зібрано</span>
@@ -508,20 +538,28 @@
             </div>
             <div class="summary-item">
                 <span class="summary-label">Залишається зібрати</span>
-                <span class="summary-value" id="remaining-money">537 600 грн</span>
+                <span class="summary-value" id="remaining-money">720 000 грн</span>
             </div>
             <div class="summary-item">
                 <span class="summary-label">З квартири</span>
                 <span class="summary-value">1 600 грн</span>
             </div>
         </div>
+        <p class="payment-note" id="unidentified-payment-message" hidden></p>
         <a class="pay-button" href="#payment-details">Сплатити</a>
     </section>
 
     <div id="loading" class="loading">Завантаження даних із Google Таблиці...</div>
     
+    <div class="building-wrapper" id="building-4-wrapper" style="display: none;" role="region" aria-labelledby="building-4-title">
+        <h2 class="building-heading" id="building-4-title">Будинок 4 <span class="building-paid-count" id="building-4-paid-count">Сплачено: 0 / 175</span></h2>
+        <div class="building-scroll">
+            <div class="building-container" id="building-4"></div>
+        </div>
+    </div>
+
     <div class="building-wrapper" id="building-wrapper" style="display: none;" role="region" aria-labelledby="building-title">
-        <h2 class="building-heading" id="building-title">Будинок 6</h2>
+        <h2 class="building-heading" id="building-title">Будинок 6 <span class="building-paid-count" id="building-6-paid-count">Сплачено: 0 / 336</span></h2>
         <div class="building-scroll">
             <div class="building-container" id="building"></div>
         </div>
@@ -593,7 +631,7 @@
         <p class="payment-note">Будь ласка, заповнюйте номер особового рахунку, квартири та ПІБ платника, щоб ми могли коректно зарахувати внесок.</p>
     </section>
 
-    <section class="initiative-group" aria-labelledby="initiative-group-title">
+    <section class="initiative-group" id="initiative-group" aria-labelledby="initiative-group-title">
         <h2 id="initiative-group-title">Ініціативна група</h2>
         <p>Контактні особи будинку на вул. Боголюбова, 6</p>
         <div class="contact-list">
@@ -628,7 +666,8 @@
     <script>
         // ВСТАВТЕ ВАШЕ ПОСИЛАННЯ НА CSV З GOOGLE SHEETS ТУТ:
         //const GOOGLE_SHEET_CSV_URL = 'bogolyubova_6.csv';
-        const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRFVsMxOUVpP8qht6Y9OhMq0T_STDaC4dR_GEWqJ2_hcfNEsmYJ9BaN4GVj_dapp5qRTRYWeLOaH4Ur/pub?gid=1664241156&single=true&output=csv';
+        //const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRFVsMxOUVpP8qht6Y9OhMq0T_STDaC4dR_GEWqJ2_hcfNEsmYJ9BaN4GVj_dapp5qRTRYWeLOaH4Ur/pub?gid=1664241156&single=true&output=csv';
+        const GOOGLE_SHEET_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vRFVsMxOUVpP8qht6Y9OhMq0T_STDaC4dR_GEWqJ2_hcfNEsmYJ9BaN4GVj_dapp5qRTRYWeLOaH4Ur/pub?gid=1573189913&single=true&output=csv';
 
         const sectionsData = [
             { id: 1, cols: 4, rows: [ [9, 305, 306, 307, 308], [8, 29, 30, 31, 32], [7, 25, 26, 27, 28], [6, 21, 22, 23, 24], [5, 17, 18, 19, 20], [4, 13, 14, 15, 16], [3, 9, 10, 11, 12], [2, 5, 6, 7, 8], [1, 1, 2, 3, 4] ] },
@@ -637,44 +676,153 @@
             { id: 4, cols: 8, rows: [ [11, 325, 326, 327, 328, 329, 330, 331, 332], [10, 265, 266, 267, 268, 269, 270, 271, 272], [9, 257, 258, 259, 260, 261, 262, 263, 264], [8, 249, 250, 251, 252, 253, 254, 255, 256], [7, 241, 242, 243, 244, 245, 246, 247, 248], [6, 233, 234, 235, 236, 237, 238, 239, 240], [5, 225, 226, 227, 228, 229, 230, 231, 232], [4, 217, 218, 219, 220, 221, 222, 223, 224], [3, 209, 210, 211, 212, 213, 214, 215, 216], [2, 201, 202, 203, 204, 205, 206, 207, 208], [1, 193, 194, 195, 196, 197, 198, 199, 200] ] },
             { id: 5, cols: 4, rows: [ [9, 333, 334, 335, 336], [8, 301, 302, 303, 304], [7, 297, 298, 299, 300], [6, 293, 294, 295, 296], [5, 289, 290, 291, 292], [4, 285, 286, 287, 288], [3, 281, 282, 283, 284], [2, 277, 278, 279, 280], [1, 273, 274, 275, 276] ] }
         ];
+        function rowsOfEight(apartments) {
+            return Array.from({ length: Math.ceil(apartments.length / 8) }, (_, index) => [
+                index + 1,
+                ...apartments.slice(index * 8, (index + 1) * 8),
+            ]);
+        }
+
+        const building4SectionsData = [
+            {
+                id: 1,
+                cols: 8,
+                rows: rowsOfEight([
+                    ...Array.from({ length: 79 }, (_, index) => index + 1),
+                    ...Array.from({ length: 8 }, (_, index) => index + 160),
+                    175,
+                ]).reverse(),
+            },
+            {
+                id: 2,
+                cols: 8,
+                rows: rowsOfEight([
+                    ...Array.from({ length: 80 }, (_, index) => index + 80),
+                    ...Array.from({ length: 7 }, (_, index) => index + 168),
+                ]).reverse(),
+            },
+        ];
         const commercialIds = new Set(['sofiafoods', 'kindergarden', 'offices', 'stationery']);
+        const DISPLAYED_BUILDINGS = new Set(['4', '6']);
+        const FULL_PAYMENT_UAH = 1600;
+        const MIN_COUNTED_PAYMENT_UAH = 400;
+        const OVERPAYMENT_MIN_UAH = 1800;
+        const COLLECTION_TARGET_UAH = 720000;
+
+        function parseCsvLine(line) {
+            const values = [];
+            let value = '';
+            let quoted = false;
+
+            for (let index = 0; index < line.length; index++) {
+                const character = line[index];
+                if (character === '"') {
+                    if (quoted && line[index + 1] === '"') {
+                        value += '"';
+                        index++;
+                    } else {
+                        quoted = !quoted;
+                    }
+                } else if (character === ',' && !quoted) {
+                    values.push(value.trim());
+                    value = '';
+                } else {
+                    value += character;
+                }
+            }
+            values.push(value.trim());
+            return values;
+        }
+
+        function parsePaymentDate(value) {
+            const dateText = String(value || '').trim();
+            let day;
+            let month;
+            let year;
+            let match = dateText.match(/^(\d{1,2})[./-](\d{1,2})[./-](\d{4})$/);
+            if (match) {
+                [, day, month, year] = match;
+            } else {
+                match = dateText.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+                if (!match) return null;
+                [, year, month, day] = match;
+            }
+
+            const timestamp = Date.UTC(Number(year), Number(month) - 1, Number(day));
+            const parsed = new Date(timestamp);
+            if (parsed.getUTCFullYear() !== Number(year) ||
+                parsed.getUTCMonth() !== Number(month) - 1 ||
+                parsed.getUTCDate() !== Number(day)) return null;
+
+            const iso = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            return {
+                timestamp,
+                iso,
+                display: `${String(day).padStart(2, '0')}.${String(month).padStart(2, '0')}.${year}`,
+            };
+        }
 
         async function fetchPaymentData() {
             try {
                 const response = await fetch(GOOGLE_SHEET_CSV_URL);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
                 const csvText = await response.text();
-                
-                const paidApartments = new Set();
+                const lines = csvText.trim().split(/\r?\n/).filter(Boolean);
+                const headers = parseCsvLine(lines.shift() || '').map((header) =>
+                    header.replace(/^\uFEFF/, '').trim().toLowerCase()
+                );
+                const buildingIndex = headers.indexOf('building');
+                const apartmentIndex = headers.indexOf('app');
+                const amountIndex = headers.indexOf('amount');
+                const dateIndex = headers.indexOf('date');
+                if (buildingIndex === -1 || apartmentIndex === -1 || amountIndex === -1) {
+                    throw new Error('CSV is missing building, app, or amount columns');
+                }
+
+                const apartmentPayments = new Map(
+                    [...DISPLAYED_BUILDINGS].map((building) => [building, new Map()])
+                );
                 const commercialPayments = new Map();
-                const lines = csvText.split('\n');
-                
+                let unassignedTotal = 0;
+                let unassignedPaidCount = 0;
+                let latestPaymentDate = null;
                 lines.forEach((line) => {
-                    const columns = line.split(',');
-                    if (columns.length >= 2) {
-                        const identifier = columns[0].trim().toLowerCase();
-                        const aptNum = parseInt(identifier, 10);
-                        const amount = Number(columns[1].trim().replace(/\s/g, ''));
-                        if (!isNaN(aptNum) && amount === 1600) {
-                            paidApartments.add(aptNum);
-                        }
-                        if (commercialIds.has(identifier) && Number.isFinite(amount) && amount > 0) {
-                            commercialPayments.set(identifier, amount);
-                        }
+                    const columns = parseCsvLine(line);
+                    const building = columns[buildingIndex]?.trim();
+                    const amount = Number(columns[amountIndex]?.replace(/\s/g, '').replace(',', '.'));
+                    if (!Number.isFinite(amount) || amount <= 0) return;
+
+                    const paymentDate = parsePaymentDate(columns[dateIndex]);
+                    if (paymentDate && (!latestPaymentDate || paymentDate.timestamp > latestPaymentDate.timestamp)) {
+                        latestPaymentDate = paymentDate;
                     }
+
+                    const apartment = Number.parseInt(columns[apartmentIndex], 10);
+                    if (!DISPLAYED_BUILDINGS.has(building) || !Number.isInteger(apartment)) {
+                        unassignedTotal += amount;
+                        if (amount >= MIN_COUNTED_PAYMENT_UAH) unassignedPaidCount++;
+                        return;
+                    }
+
+                    const payments = apartmentPayments.get(building);
+                    payments.set(apartment, (payments.get(apartment) || 0) + amount);
                 });
-                
-                renderBuilding(paidApartments, commercialPayments);
+
+                const building4 = renderBuilding('building-4', '4', building4SectionsData, apartmentPayments.get('4'));
+                const building6 = renderBuilding('building', '6', sectionsData, apartmentPayments.get('6'));
+                renderSummary([building4, building6], commercialPayments, unassignedTotal, unassignedPaidCount, latestPaymentDate);
             } catch (error) {
                 document.getElementById('loading').innerText = 'Помилка завантаження даних із Google Таблиці.';
             }
         }
 
-        function renderBuilding(paidSet, commercialPayments) {
-            const container = document.getElementById('building');
+        function renderBuilding(containerId, building, buildingSections, apartmentPayments) {
+            const container = document.getElementById(containerId);
             container.innerHTML = '';
             let totalPaid = 0;
+            let totalApartments = 0;
 
-            sectionsData.forEach(sec => {
+            buildingSections.forEach(sec => {
                 const secDiv = document.createElement('div');
                 secDiv.className = 'section';
                 secDiv.innerHTML = `<div class="section-title">Секція ${sec.id}</div>`;
@@ -689,15 +837,28 @@
                         const aptDiv = document.createElement('div');
                         aptDiv.className = 'apt';
                         aptDiv.innerText = aptNum;
-                        aptDiv.id = `apt-${aptNum}`;
+                        aptDiv.id = `apt-${building}-${aptNum}`;
+                        totalApartments++;
 
-                        if (paidSet.has(aptNum)) {
+                        const paidAmount = apartmentPayments.get(aptNum) || 0;
+                        if (paidAmount >= OVERPAYMENT_MIN_UAH) {
                             aptDiv.classList.add('paid');
-                            aptDiv.title = `Кв. ${aptNum}: Сплачено 1600 грн`;
+                            aptDiv.classList.add('overpaid');
+                            aptDiv.title = `Кв. ${aptNum}: Сплачено більше`;
+                            totalPaid++;
+                        } else if (paidAmount >= FULL_PAYMENT_UAH) {
+                            aptDiv.classList.add('paid');
+                            aptDiv.title = `Кв. ${aptNum}: Сплачено`;
+                            totalPaid++;
+                        } else if (paidAmount >= MIN_COUNTED_PAYMENT_UAH) {
+                            aptDiv.classList.add('partially-paid');
+                            aptDiv.title = `Кв. ${aptNum}: Частково сплачено`;
                             totalPaid++;
                         } else {
                             aptDiv.classList.add('unpaid');
-                            aptDiv.title = `Кв. ${aptNum}: Немає оплати`;
+                            aptDiv.title = paidAmount
+                                ? `Кв. ${aptNum}: Частково сплачено`
+                                : `Кв. ${aptNum}: Немає оплати`;
                         }
 
                         grid.appendChild(aptDiv);
@@ -708,9 +869,43 @@
                 container.appendChild(secDiv);
             });
 
-            const totalApartments = 336;
-            const paymentPerApartment = 1600;
-            const collectionTarget = totalApartments * paymentPerApartment;
+            document.getElementById(`${containerId}-wrapper`).style.display = 'block';
+            document.getElementById(`building-${building}-paid-count`).textContent =
+                `Сплачено: ${totalPaid} / ${totalApartments}`;
+            return {
+                totalApartments,
+                totalPaid,
+                apartmentTotal: [...apartmentPayments.values()].reduce((total, amount) => total + amount, 0),
+            };
+        }
+
+        function renderSummary(buildingStats, commercialPayments, unassignedTotal, unassignedPaidCount, latestPaymentDate) {
+            const totalApartments = buildingStats.reduce((total, building) => total + building.totalApartments, 0);
+            const identifiedPaidCount = buildingStats.reduce((total, building) => total + building.totalPaid, 0);
+            const totalPaid = Math.min(totalApartments, identifiedPaidCount + unassignedPaidCount);
+            const apartmentTotal = buildingStats.reduce((total, building) => total + building.apartmentTotal, 0);
+            const collectionTarget = COLLECTION_TARGET_UAH;
+            const updateDate = document.getElementById('payment-update-date');
+            updateDate.textContent = latestPaymentDate?.display || '—';
+            if (latestPaymentDate) updateDate.dateTime = latestPaymentDate.iso;
+            else updateDate.removeAttribute('datetime');
+            const unidentifiedMessage = document.getElementById('unidentified-payment-message');
+            if (unassignedPaidCount > 0) {
+                const count = document.createElement('strong');
+                count.textContent = unassignedPaidCount.toLocaleString('uk-UA');
+                const groupLink = document.createElement('a');
+                groupLink.href = '#initiative-group';
+                groupLink.textContent = 'ініціативної групи';
+                unidentifiedMessage.replaceChildren(
+                    count,
+                    document.createTextNode(' квартир внесли оплату, але не вказали особовий рахунок. Напишіть представнику '),
+                    groupLink,
+                    document.createTextNode(' ваш номер квартири, ПІБ та дату платежу, щоб ми позначили вашу оплату.'),
+                );
+                unidentifiedMessage.hidden = false;
+            } else {
+                unidentifiedMessage.hidden = true;
+            }
             const apartmentPercent = Math.round((totalPaid / totalApartments) * 100);
             document.getElementById('paid-count').innerText = totalPaid;
             document.getElementById('paid-percent').innerText = `${apartmentPercent}%`;
@@ -719,7 +914,7 @@
             document.getElementById('unpaid-count').innerText = unpaid;
 
             const commercialTotal = [...commercialPayments.values()].reduce((total, amount) => total + amount, 0);
-            const collectedMoney = (totalPaid * paymentPerApartment) + commercialTotal;
+            const collectedMoney = Math.round(apartmentTotal + commercialTotal + unassignedTotal);
             const moneyPercent = Math.min(100, Math.round((collectedMoney / collectionTarget) * 100));
             document.getElementById('collected-money').innerText = collectedMoney.toLocaleString('uk-UA') + ' грн';
             document.getElementById('collected-money-detail').innerText = collectedMoney.toLocaleString('uk-UA') + ' грн';
@@ -741,7 +936,6 @@
             });
 
             document.getElementById('loading').style.display = 'none';
-            document.getElementById('building-wrapper').style.display = 'block';
         }
 
         const requisitesText = [
