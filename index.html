@@ -758,6 +758,19 @@
             return values;
         }
 
+        function parsePaymentAmount(value) {
+            const amountText = String(value || '').replace(/[\s\u00A0\u202F]/g, '');
+            if (/^\d{1,3}(?:[.,]\d{3})+(?:[.,]\d{1,2})?$/.test(amountText)) {
+                const decimalMatch = amountText.match(/[.,](\d{1,2})$/);
+                const wholePart = decimalMatch ? amountText.slice(0, -decimalMatch[0].length) : amountText;
+                return Number(wholePart.replace(/[.,]/g, '') + (decimalMatch ? `.${decimalMatch[1]}` : ''));
+            }
+            if (/^\d+(?:[.,]\d{1,2})?$/.test(amountText)) {
+                return Number(amountText.replace(',', '.'));
+            }
+            return NaN;
+        }
+
         function parsePaymentDate(value) {
             const dateText = String(value || '').trim();
             let day;
@@ -813,7 +826,7 @@
                 lines.forEach((line) => {
                     const columns = parseCsvLine(line);
                     const building = columns[buildingIndex]?.trim();
-                    const amount = Number(columns[amountIndex]?.replace(/\s/g, '').replace(',', '.'));
+                    const amount = parsePaymentAmount(columns[amountIndex]);
                     if (!Number.isFinite(amount) || amount <= 0) return;
 
                     const paymentDate = parsePaymentDate(columns[dateIndex]);
