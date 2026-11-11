@@ -570,9 +570,9 @@
         <ul>
             <li data-commercial-id="sofiafoods">Магазин Софія Фудс (буд 6) <span class="commercial-payment-status">Чекаємо оплату</span></li>
             <li data-commercial-id="kindergarden">Дитячий садок (буд 6) <span class="commercial-payment-status">Чекаємо оплату</span></li>
-            <li data-commercial-id="offices">Підвал з офісами (буд 6) <span class="commercial-payment-status">Чекаємо оплату</span></li>
+            <li>Підвал з офісами (буд 6) <span class="commercial-payment-status is-paid">Сплачено 10 000 грн</span></li>
             <li data-commercial-id="stationery">Магазин канцелярії (буд 6) <span class="commercial-payment-status">Чекаємо оплату</span></li>
-            <li data-commercial-id="atelier">Ател'є (буд 4) <span class="commercial-payment-status">Чекаємо оплату</span></li>
+            <li>Ател'є (буд 4) <span class="commercial-payment-status is-paid">Сплачено 1 600 грн</span></li>
         </ul>
     </section>
 
@@ -776,26 +776,31 @@
             let day;
             let month;
             let year;
-            let match = dateText.match(/^(\d{1,2})[./-](\d{1,2})[./-](\d{4})$/);
+            let match = dateText.match(/^(\d{1,2})[./-](\d{1,2})[./-](\d{4})(?:[ T](\d{1,2}):(\d{2})(?::(\d{2}))?)?$/);
             if (match) {
                 [, day, month, year] = match;
             } else {
-                match = dateText.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+                match = dateText.match(/^(\d{4})-(\d{1,2})-(\d{1,2})(?:[ T](\d{1,2}):(\d{2})(?::(\d{2}))?)?$/);
                 if (!match) return null;
                 [, year, month, day] = match;
             }
 
-            const timestamp = Date.UTC(Number(year), Number(month) - 1, Number(day));
+            const hour = Number(match[4] || 0);
+            const minute = Number(match[5] || 0);
+            const second = Number(match[6] || 0);
+            if (hour > 23 || minute > 59 || second > 59) return null;
+            const timestamp = Date.UTC(Number(year), Number(month) - 1, Number(day), hour, minute, second);
             const parsed = new Date(timestamp);
             if (parsed.getUTCFullYear() !== Number(year) ||
                 parsed.getUTCMonth() !== Number(month) - 1 ||
                 parsed.getUTCDate() !== Number(day)) return null;
 
             const iso = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const time = `${String(hour).padStart(2, '0')}:${String(minute).padStart(2, '0')}`;
             return {
                 timestamp,
-                iso,
-                display: `${String(day).padStart(2, '0')}.${String(month).padStart(2, '0')}.${year}`,
+                iso: `${iso}T${time}:${String(second).padStart(2, '0')}`,
+                display: `${String(day).padStart(2, '0')}.${String(month).padStart(2, '0')}.${year} ${time}`,
             };
         }
 
@@ -812,6 +817,8 @@
                 const apartmentIndex = headers.indexOf('app');
                 const amountIndex = headers.indexOf('amount');
                 const dateIndex = headers.indexOf('date');
+                const timestampIndex = headers.indexOf('timestamp');
+                const referenceIndex = headers.indexOf('reference');
                 if (buildingIndex === -1 || apartmentIndex === -1 || amountIndex === -1) {
                     throw new Error('CSV is missing building, app, or amount columns');
                 }
@@ -829,7 +836,9 @@
                     const amount = parsePaymentAmount(columns[amountIndex]);
                     if (!Number.isFinite(amount) || amount <= 0) return;
 
-                    const paymentDate = parsePaymentDate(columns[dateIndex]);
+                    const paymentDate = columns[referenceIndex]?.trim()
+                        ? parsePaymentDate(columns[timestampIndex] || columns[dateIndex])
+                        : null;
                     if (paymentDate && (!latestPaymentDate || paymentDate.timestamp > latestPaymentDate.timestamp)) {
                         latestPaymentDate = paymentDate;
                     }
