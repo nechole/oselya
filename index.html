@@ -568,11 +568,12 @@
     <section class="commercial-premises" aria-labelledby="commercial-premises-title">
         <h2 id="commercial-premises-title">Комерційні приміщення</h2>
         <ul>
-            <li data-commercial-id="sofiafoods">Магазин Софія Фудс (буд 6) <span class="commercial-payment-status">Чекаємо оплату</span></li>
-            <li data-commercial-id="kindergarden">Дитячий садок (буд 6) <span class="commercial-payment-status">Чекаємо оплату</span></li>
+            <li>Магазин Софія Фудс (буд 6) <span class="commercial-payment-status">Чекаємо внесок</span></li>
+            <li>Дитячий садок (буд 6) <span class="commercial-payment-status">Чекаємо внесок</span></li>
             <li>Підвал з офісами (буд 6) <span class="commercial-payment-status is-paid">Сплачено 10 000 грн</span></li>
-            <li data-commercial-id="stationery">Магазин канцелярії (буд 6) <span class="commercial-payment-status">Чекаємо оплату</span></li>
+            <li>Магазин канцелярії (буд 6) <span class="commercial-payment-status is-paid">Сплачено 3 200 грн</span></li>
             <li>Ател'є (буд 4) <span class="commercial-payment-status is-paid">Сплачено 1 600 грн</span></li>
+            <li>ЖЕК Оселя <span class="commercial-payment-status">Чекаємо внесок</span></li>
         </ul>
     </section>
 
@@ -726,7 +727,6 @@
                 ]).reverse(),
             },
         ];
-        const commercialIds = new Set(['sofiafoods', 'kindergarden', 'offices', 'stationery']);
         const DISPLAYED_BUILDINGS = new Set(['4', '6']);
         const FULL_PAYMENT_UAH = 1600;
         const MIN_COUNTED_PAYMENT_UAH = 400;
@@ -826,7 +826,6 @@
                 const apartmentPayments = new Map(
                     [...DISPLAYED_BUILDINGS].map((building) => [building, new Map()])
                 );
-                const commercialPayments = new Map();
                 let unassignedTotal = 0;
                 let unassignedPaidCount = 0;
                 let latestPaymentDate = null;
@@ -856,7 +855,7 @@
 
                 const building4 = renderBuilding('building-4', '4', building4SectionsData, apartmentPayments.get('4'));
                 const building6 = renderBuilding('building', '6', sectionsData, apartmentPayments.get('6'));
-                renderSummary([building4, building6], commercialPayments, unassignedTotal, unassignedPaidCount, latestPaymentDate);
+                renderSummary([building4, building6], unassignedTotal, unassignedPaidCount, latestPaymentDate);
             } catch (error) {
                 document.getElementById('loading').innerText = 'Помилка завантаження даних із Google Таблиці.';
             }
@@ -925,7 +924,7 @@
             };
         }
 
-        function renderSummary(buildingStats, commercialPayments, unassignedTotal, unassignedPaidCount, latestPaymentDate) {
+        function renderSummary(buildingStats, unassignedTotal, unassignedPaidCount, latestPaymentDate) {
             const totalApartments = buildingStats.reduce((total, building) => total + building.totalApartments, 0);
             const identifiedPaidCount = buildingStats.reduce((total, building) => total + building.totalPaid, 0);
             const totalPaid = Math.min(totalApartments, identifiedPaidCount + unassignedPaidCount);
@@ -959,8 +958,7 @@
             const unpaid = totalApartments - totalPaid;
             document.getElementById('unpaid-count').innerText = unpaid;
 
-            const commercialTotal = [...commercialPayments.values()].reduce((total, amount) => total + amount, 0);
-            const collectedMoney = Math.round(apartmentTotal + commercialTotal + unassignedTotal);
+            const collectedMoney = Math.round(apartmentTotal + unassignedTotal);
             const moneyPercent = Math.min(100, Math.round((collectedMoney / collectionTarget) * 100));
             document.getElementById('collected-money').innerText = collectedMoney.toLocaleString('uk-UA') + ' грн';
             document.getElementById('collected-money-detail').innerText = collectedMoney.toLocaleString('uk-UA') + ' грн';
@@ -971,15 +969,6 @@
             const progress = document.getElementById('collection-progress');
             progress.style.width = `${moneyPercent}%`;
             progress.parentElement.setAttribute('aria-valuenow', moneyPercent);
-
-            document.querySelectorAll('[data-commercial-id]').forEach((premises) => {
-                const amount = commercialPayments.get(premises.dataset.commercialId);
-                const status = premises.querySelector('.commercial-payment-status');
-                status.textContent = amount
-                    ? `Сплачено ${amount.toLocaleString('uk-UA')} грн`
-                    : 'Чекаємо оплату';
-                status.classList.toggle('is-paid', Boolean(amount));
-            });
 
             document.getElementById('loading').style.display = 'none';
         }
