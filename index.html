@@ -876,13 +876,16 @@
                 grid.className = 'grid';
                 grid.style.gridTemplateColumns = `repeat(${sec.cols}, 1fr)`;
 
-                sec.rows.forEach(row => {
+                sec.rows.forEach((row, rowIndex) => {
                     for (let i = 1; i < row.length; i++) {
                         const aptNum = row[i];
                         const aptDiv = document.createElement('div');
                         aptDiv.className = 'apt';
                         aptDiv.innerText = aptNum;
                         aptDiv.id = `apt-${building}-${aptNum}`;
+                        // Preserve row boundaries when a row has fewer apartments than columns.
+                        aptDiv.style.gridRow = rowIndex + 1;
+                        aptDiv.style.gridColumn = i;
                         totalApartments++;
 
                         const paidAmount = apartmentPayments.get(aptNum) || 0;
